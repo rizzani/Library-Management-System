@@ -1,77 +1,73 @@
 public class Book {
     private String title_;
     private String author;
-    private int isbn;
+    private String isbn;  // Changed from int to String
     private boolean isAvailable;
 
-    //default constructor
-    public Book(){
+    // Default constructor
+    public Book() {
         title_ = "Book Title";
         author = "Book Author";
-        isbn = 1234;
+        isbn = "1234"; // Default as string
         isAvailable = true;
     }
 
-    //primary constructor
-    public Book(String title_, String author, int isbn, boolean isAvailable){
+    // Primary constructor
+    public Book(String title_, String author, String isbn, boolean isAvailable) {
         this.title_ = title_;
         this.author = author;
         this.isbn = isbn;
         this.isAvailable = isAvailable;
     }
 
-    //copy constructor
-    public Book(Book oldBook){
+    // Copy constructor
+    public Book(Book oldBook) {
         this.title_ = oldBook.title_;
         this.author = oldBook.author;
         this.isbn = oldBook.isbn;
         this.isAvailable = oldBook.isAvailable;
     }
 
-
-    //getters
-    public String GetTitle(){
+    // Getters
+    public String getTitle() {
         return title_;
     }
 
-    public String GetAuthor(){
+    public String getAuthor() {
         return author;
     }
 
-    public int GetIsbn(){
+    public String getIsbn() {  // Changed return type
         return isbn;
     }
 
-    public boolean GetIsAvailable(){
+    public boolean getIsAvailable() {
         return isAvailable;
     }
 
-    //setters
-    public void SetTitle(String title_){
+    // Setters
+    public void setTitle(String title_) {
         this.title_ = title_;
     }
 
-    public void SetAuthor(String author){
+    public void setAuthor(String author) {
         this.author = author;
     }
 
-    public void SetIsbn(int isbn){
+    public void setIsbn(String isbn) { // Changed parameter type
         this.isbn = isbn;
     }
 
-    public void SetAvailable(boolean available) {
+    public void setAvailable(boolean available) {
         isAvailable = available;
     }
 
-    public void Display(){
-        System.out.print("Book Title: " + title_ + ", ");
-        System.out.print("Book Author: " + author + ", ");
-        System.out.print("Book ISBN: " + isbn + ", ");
-        if(isAvailable) {
-            System.out.print("Book is available");
-        }
-        else{
-            System.out.print("Book is not available");
-        }
+    public void display() {
+        System.out.println("===========================================");
+        System.out.println("Book Title: " + title_);
+        System.out.println("Book Author: " + author);
+        System.out.println("Book ISBN: " + isbn);
+        System.out.println(isAvailable ? "Book is available" : "Book is not available");
+        System.out.println("===========================================");
     }
 }

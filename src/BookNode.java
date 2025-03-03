@@ -1,27 +1,27 @@
-public class Node {
+public class BookNode {
     private Book data;
-    private Node nextNode;
+    private BookNode nextNode;
 
     //default constructor
-    public Node(){
+    public BookNode(){
         data = new Book();
         nextNode = null;
     }
 
     //primary constructor 1
-    public Node(Book data, Node nextNode){
+    public BookNode(Book data, BookNode nextNode){
         this.data = new Book(data); //calls copy constructor in Book to initialise
         this.nextNode = nextNode;
     }
 
     //primary constructor 2 used 99% of the time
-    public Node(Book data){
+    public BookNode(Book data){
         this.data = new Book(data);
         nextNode = null;
     }
 
     //copy constructor
-    public Node(Node oldNode){
+    public BookNode(BookNode oldNode){
         this.data = oldNode.data;
         this.nextNode = oldNode.nextNode;
     }
@@ -30,23 +30,19 @@ public class Node {
     public Book GetData(){
         return data;
     }
-
-    public Node GetNextNode() {
+    public BookNode GetNextNode() {
         return nextNode;
     }
-
+    //setters
     public void SetData(Book data) {
         this.data = data;
     }
-
-    public void SetNextNode(Node nextNode) {
+    public void SetNextNode(BookNode nextNode) {
         this.nextNode = nextNode;
     }
 
-    public void Display(){
-        System.out.print("[ ");
-        data.Display();
-        System.out.print(" | * ]->");
+    public void display(){
+        data.display();
     }
 }
 jrngo3i4nrgo4n

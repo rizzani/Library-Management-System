@@ -1,77 +1,58 @@
 public class LinkedList {
 
-    private Node head;
+    private BookNode head;
 
     //default constructor
     public LinkedList(){
-        head = null;//head to poin to null
+        head = null;
     }
 
     //primary constructor
-    public LinkedList(Node head){
+    public LinkedList(BookNode head){
         this.head = head; //head point to a node
     }
 
     //copy constructor
     public LinkedList(LinkedList list){
-        this.head = list.head;//initialize head to point to the head of an existing list
+        this.head = list.head;
     }
 
-    public Node GetHead() {
+    public BookNode GetHead() {
         return head;
     }
 
-    public void SetHead(Node head) {
+    public void SetHead(BookNode head) {
         this.head = head;
     }
 
-    public void InsertAtFront(Book dataToInsert){
-        Node temp = new Node(dataToInsert);//create node to be inserted
-        if(temp != null) //if created successfully
-        {
-            if(IsEmpty())//if it is empty
-            {
-                head = temp;//set head to new node
-            }
-            else
-            {
-                temp.SetNextNode(head);//set next node as what head was pointing to before
-                head = temp;
-            }
-        }
-        else//if not successful in reserving space that means list is full
-        {
-            System.err.println("Error! The list is full! Cannot insert new node");
+    public void InsertAtFront(Book dataToInsert) {
+        BookNode temp = new BookNode(dataToInsert);
+        if (IsEmpty()) {
+            head = temp;
+        } else {
+            temp.SetNextNode(head);
+            head = temp;
         }
     }
 
-    public void InsertAtBack(Book dataToInsert){
-        Node temp = new Node(dataToInsert);//create node to be inserted
-        if(temp != null)
-        {
-            if(IsEmpty())//if it is empty
-            {
-                head = temp;//set head to new node
+    public void InsertAtBack(Book dataToInsert) {
+        BookNode temp = new BookNode(dataToInsert);
+
+        if (IsEmpty()) {
+            head = temp;
+        } else {
+            BookNode traverseTemp = head;
+
+            while (traverseTemp.GetNextNode() != null) {
+                traverseTemp = traverseTemp.GetNextNode();
             }
-            else//if list is not empty
-            {
-                Node traverseTemp = head;//create a node to aid in list traversal and point ot to start of list
-                while(traverseTemp.GetNextNode() != null)//traverse until we get to last node, node with link portion pointing to null
-                {
-                    traverseTemp = traverseTemp.GetNextNode();//let traverseTemp point to next element in the list
-                }//ends when traverseTemp next node is pointing to null
-                traverseTemp.SetNextNode(temp);//sets temp as next node in list(back of list)
-            }
-        }
-        else
-        {
-            System.err.println("Error! The list is full!");
+
+            traverseTemp.SetNextNode(temp);
         }
     }
 
-    public boolean IsEmpty()
-    {
-        return (head == null);//return result of check if head is equal to null
+    public boolean IsEmpty() {
+        return (head == null);
     }
 
     public void DisplayList()
@@ -82,21 +63,21 @@ public class LinkedList {
             return;
         }
 
-        Node trav = head; //create node to aid in list traversal
-        while(trav !=null)//while trav is pointing to valid node
+        BookNode trav = head;
+        while(trav !=null)
         {
-            trav.Display();
+            trav.display();
             trav = trav.GetNextNode();
         }
-        System.out.print("null");
+        System.out.println("===========================================");
     }
 
     public int CountNodes()
     {
         int count = 0;
 
-        Node trav = head; //create node to aid in list traversal
-        while(trav !=null)//while trav is pointing to valid node
+        BookNode trav = head;
+        while(trav !=null)
         {
             count ++;
             trav = trav.GetNextNode();

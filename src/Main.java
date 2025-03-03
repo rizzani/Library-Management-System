@@ -1,29 +1,78 @@
+import java.util.List;
+import java.util.Scanner;
+
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        LinkedList list = new LinkedList();//create empty list
-        Book book1 = new Book("Red Riding Hood", "Mary Brown", 12350, true);
-        Book book2 = new Book("Blue Berry", "Mary Poppin", 12351, true);
-        Book book3 = new Book("Tall Van", "Cher Scott", 12352, false);
-        Book book4 = new Book("Big Hill", "Doe Brown", 12353, true);
-        Book book5 = new Book("Yellow Car", "John Doe", 12354, false);
+        LinkedList list = new LinkedList();
+        BookBST bookBST = new BookBST();
+        Scanner scanner = new Scanner(System.in);
+        new Add(bookBST);
+        while (true) {
+            System.out.println("\nBook Management System");
+            System.out.println("1. Insert a book");
+            System.out.println("2. Search by Title");
+            System.out.println("3. Search by Author");
+            System.out.println("4. Search by ISBN");
+            System.out.println("5. Display all books");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
 
-        list.DisplayList();//display list before adding any books/nodes
-        System.out.println("Number of elements in list: " + list.CountNodes());
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-
-        list.InsertAtFront(book1);
-        list.InsertAtBack(book2);
-        list.InsertAtFront(book3);
-        list.InsertAtBack(book4);
-        list.InsertAtFront(book5);
-
-
-        //Display format: 5 -> 3 -> 1 -> 2 -> 4
-        list.DisplayList();
-
-        System.out.println();
-        System.out.println("Number of elements in list: " + list.CountNodes());
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter title: ");
+                    String title = scanner.nextLine();
+                    System.out.print("Enter author: ");
+                    String author = scanner.nextLine();
+                    System.out.print("Enter ISBN: ");
+                    String isbn = scanner.nextLine(); // Changed from int to String
+                    bookBST.insert(new Book(title, author, isbn, true));
+                    System.out.println("Book inserted successfully!");
+                    break;
+                case 2:
+                    System.out.print("Enter title to search: ");
+                    title = scanner.nextLine();
+                    Book foundBook = bookBST.searchByTitle(title);
+                    if (foundBook != null) {
+                        foundBook.display();
+                    } else {
+                        System.out.println("Book not found.");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter author to search: ");
+                    author = scanner.nextLine();
+                    List<Book> booksByAuthor = bookBST.searchByAuthor(author);
+                    if (!booksByAuthor.isEmpty()) {
+                        booksByAuthor.forEach(Book::display);
+                    } else {
+                        System.out.println("No books found by this author.");
+                    }
+                    break;
+                case 4:
+                    System.out.print("Enter ISBN to search: ");
+                    isbn = scanner.nextLine(); // Changed from int to String
+                    foundBook = bookBST.searchByISBN(isbn);
+                    if (foundBook != null) {
+                        foundBook.display();
+                    } else {
+                        System.out.println("Book not found.");
+                    }
+                    break;
+                case 5:
+                    bookBST.inorder();
+                    break;
+                case 6:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        }
     }
 }
