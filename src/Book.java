@@ -63,11 +63,9 @@ public class Book {
     }
 
     public void display() {
-        System.out.println("===========================================");
         System.out.println("Book Title: " + title_);
         System.out.println("Book Author: " + author);
         System.out.println("Book ISBN: " + isbn);
         System.out.println(isAvailable ? "Book is available" : "Book is not available");
-        System.out.println("===========================================");
     }
 }

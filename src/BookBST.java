@@ -27,7 +27,9 @@ public class BookBST {
     private void inorderRec(BooKBSTNode root) {
         if (root != null) {
             inorderRec(root.getLeft());
+            System.out.println("------------------------------------------------");
             root.getBook().display();
+            System.out.println("------------------------------------------------");
             inorderRec(root.getRight());
         }
     }

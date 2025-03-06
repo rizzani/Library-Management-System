@@ -1,19 +1,19 @@
-public class LinkedList {
+public class BookLinkedList {
 
     private BookNode head;
 
     //default constructor
-    public LinkedList(){
+    public BookLinkedList(){
         head = null;
     }
 
     //primary constructor
-    public LinkedList(BookNode head){
+    public BookLinkedList(BookNode head){
         this.head = head; //head point to a node
     }
 
     //copy constructor
-    public LinkedList(LinkedList list){
+    public BookLinkedList(BookLinkedList list){
         this.head = list.head;
     }
 
@@ -30,7 +30,7 @@ public class LinkedList {
         if (IsEmpty()) {
             head = temp;
         } else {
-            temp.SetNextNode(head);
+            temp.setNextNode(head);
             head = temp;
         }
     }
@@ -43,11 +43,11 @@ public class LinkedList {
         } else {
             BookNode traverseTemp = head;
 
-            while (traverseTemp.GetNextNode() != null) {
-                traverseTemp = traverseTemp.GetNextNode();
+            while (traverseTemp.getNextNode() != null) {
+                traverseTemp = traverseTemp.getNextNode();
             }
 
-            traverseTemp.SetNextNode(temp);
+            traverseTemp.setNextNode(temp);
         }
     }
 
@@ -67,9 +67,8 @@ public class LinkedList {
         while(trav !=null)
         {
             trav.display();
-            trav = trav.GetNextNode();
+            trav = trav.getNextNode();
         }
-        System.out.println("===========================================");
     }
 
     public int CountNodes()
@@ -80,9 +79,22 @@ public class LinkedList {
         while(trav !=null)
         {
             count ++;
-            trav = trav.GetNextNode();
+            trav = trav.getNextNode();
         }
         return count;
     }
 
+    public Book[] getAllBooks() {
+        int size = CountNodes();
+        Book[] books = new Book[size];
+        BookNode trav = head;
+        int index = 0;
+
+        while (trav != null) {
+            books[index++] = trav.getData();
+            trav = trav.getNextNode();
+        }
+
+        return books;
+    }
 }

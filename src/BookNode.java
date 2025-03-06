@@ -27,22 +27,22 @@ public class BookNode {
     }
 
     //getters
-    public Book GetData(){
+    public Book getData(){
         return data;
     }
-    public BookNode GetNextNode() {
+    public BookNode getNextNode(){
         return nextNode;
     }
-    //setters
-    public void SetData(Book data) {
-        this.data = data;
-    }
-    public void SetNextNode(BookNode nextNode) {
+    public void setNextNode(BookNode nextNode) {
         this.nextNode = nextNode;
+    }
+    public void setData(Book data) {
+        this.data = data;
     }
 
     public void display(){
+        System.out.println("===========================================");
         data.display();
+        System.out.println("===========================================");
     }
 }
-jrngo3i4nrgo4n
