@@ -9,7 +9,7 @@ public class Main {
         BookBST bookBST = new BookBST();
         PatronLinkList patronList = new PatronLinkList();
         Scanner scanner = new Scanner(System.in);
-        new Add(bookBST);
+        new Add(bookBST,patronList);
         while (true) {
             System.out.println("\n=== Book & Patron Management System ===");
             System.out.println("1. Insert a book");
@@ -73,13 +73,13 @@ public class Main {
                 case 6: // Add a Patron
                     System.out.print("Enter Patron First Name: ");
                     String fName = scanner.nextLine();
-                    System.out.print("Enter Patron Laste Name: ");
+                    System.out.print("Enter Patron Last Name: ");
                     String lName = scanner.nextLine();
-                    System.out.print("Enter Card Number: ");
-                    String cardNumber = scanner.nextLine();
                     Patron newPatron = new Patron(fName,lName);
                     patronList.insertAtBack(newPatron);
-                    System.out.println("Patron added successfully! Assigned Password: " + newPatron.getPassword());
+                    System.out.println("Patron added successfully");
+                    System.out.println("Card Number: " + newPatron.getCardNumber());
+                    System.out.print("Assigned Password: " + newPatron.getPassword());
                     break;
 
                 case 7: // Display All Patrons

@@ -40,7 +40,7 @@ public class Patron {
     public void display(){
         System.out.println("Name: " + this.getName());
         System.out.println("Card Number: " + cardNumber);
-        if (books != null) {
+        if (this.books != null) {
             System.out.println("Books: ");
             Book[] allBooks = books.getAllBooks();
             for (int i = 0; i < allBooks.length; i++) {
