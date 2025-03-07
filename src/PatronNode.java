@@ -1,16 +1,16 @@
 public class PatronNode {
-    private Patron person;
+    private Patron patron;
     private PatronNode nextNode;
 
     public PatronNode(Patron person) {
-        this.person = person;
+        this.patron = person;
         this.nextNode = null;
     }
-    public Patron getPerson() {
-        return person;
+    public Patron getPatron() {
+        return patron;
     }
-    public void setPerson(Patron person) {
-        this.person = person;
+    public void setPatron(Patron patron) {
+        this.patron = patron;
     }
     public PatronNode getNextNode() {
         return nextNode;
@@ -20,7 +20,7 @@ public class PatronNode {
     }
     public void display(){
         System.out.println("===========================================");
-        person.display();
+        patron.display();
         System.out.println("===========================================");
     }
 
