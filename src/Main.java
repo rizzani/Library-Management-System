@@ -71,11 +71,13 @@ public class Main {
                     bookBST.inorder();
                     break;
                 case 6: // Add a Patron
-                    System.out.print("Enter Patron Name: ");
-                    String name = scanner.nextLine();
+                    System.out.print("Enter Patron First Name: ");
+                    String fName = scanner.nextLine();
+                    System.out.print("Enter Patron Laste Name: ");
+                    String lName = scanner.nextLine();
                     System.out.print("Enter Card Number: ");
                     String cardNumber = scanner.nextLine();
-                    Patron newPatron = new Patron(name, cardNumber);
+                    Patron newPatron = new Patron(fName,lName);
                     patronList.insertAtBack(newPatron);
                     System.out.println("Patron added successfully! Assigned Password: " + newPatron.getPassword());
                     break;
