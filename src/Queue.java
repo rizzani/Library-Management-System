@@ -5,7 +5,8 @@ public class Queue {
     public Queue() {
         this.firstNode = this.lastNode = null;
     }
-    public void enqueue(PatronNode node) {
+    public void enqueue(Patron patron) {
+        PatronNode node = new PatronNode(patron);
         if (this.firstNode == null) {
             firstNode = lastNode = node;
         }
@@ -46,5 +47,15 @@ public class Queue {
             System.out.println("Queue is empty");
         }
         return this.firstNode;
+    }
+    public int count() {
+        int nodeCount = 0;
+        PatronNode currentNode = this.firstNode; // Start from the first node
+
+        while (currentNode != null) {
+            nodeCount++;
+            currentNode = currentNode.getNextNode();
+        }
+        return nodeCount;
     }
 }

@@ -91,7 +91,7 @@ public class BookLinkedList {
         int index = 0;
 
         while (trav != null) {
-            books[index++] = trav.getData();
+            books[index++] = trav.getBook();
             trav = trav.getNextNode();
         }
 

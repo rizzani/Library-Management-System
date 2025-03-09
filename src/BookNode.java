@@ -1,34 +1,34 @@
 public class BookNode {
-    private Book data;
+    private Book book;
     private BookNode nextNode;
 
     //default constructor
     public BookNode(){
-        data = new Book();
+        book = new Book();
         nextNode = null;
     }
 
     //primary constructor 1
     public BookNode(Book data, BookNode nextNode){
-        this.data = new Book(data); //calls copy constructor in Book to initialise
+        this.book = new Book(data); //calls copy constructor in Book to initialise
         this.nextNode = nextNode;
     }
 
     //primary constructor 2 used 99% of the time
     public BookNode(Book data){
-        this.data = new Book(data);
+        this.book = new Book(data);
         nextNode = null;
     }
 
     //copy constructor
     public BookNode(BookNode oldNode){
-        this.data = oldNode.data;
+        this.book = oldNode.book;
         this.nextNode = oldNode.nextNode;
     }
 
     //getters
-    public Book getData(){
-        return data;
+    public Book getBook(){
+        return book;
     }
     public BookNode getNextNode(){
         return nextNode;
@@ -36,13 +36,13 @@ public class BookNode {
     public void setNextNode(BookNode nextNode) {
         this.nextNode = nextNode;
     }
-    public void setData(Book data) {
-        this.data = data;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public void display(){
         System.out.println("===========================================");
-        data.display();
+        book.display();
         System.out.println("===========================================");
     }
 }

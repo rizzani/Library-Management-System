@@ -10,6 +10,7 @@ public class Main {
         PatronLinkList patronList = new PatronLinkList();
         Scanner scanner = new Scanner(System.in);
         new Add(bookBST,patronList);
+
         while (true) {
             System.out.println("\n=== Book & Patron Management System ===");
             System.out.println("1. Insert a book");
@@ -94,8 +95,8 @@ public class Main {
                     Patron borrower = null;
 
                     while (patronNode != null) {
-                        if (patronNode.getPerson().getCardNumber().equals(patronCard)) {
-                            borrower = patronNode.getPerson();
+                        if (patronNode.getPatron().getCardNumber().equals(patronCard)) {
+                            borrower = patronNode.getPatron();
                             break;
                         }
                         patronNode = patronNode.getNextNode();
@@ -114,8 +115,11 @@ public class Main {
                         borrower.borrowBook(foundBook);
                         foundBook.setAvailable(false);
                         System.out.println("Book borrowed successfully!");
+                    } else if (!foundBook.getIsAvailable()) {
+                        System.out.println("you are added to the waitlist for this book.");
+                        foundBook.addWaitList(borrower);
                     } else {
-                        System.out.println("Book is not available or does not exist.");
+                        System.out.println("Book does not exist.");
                     }
                     break;
 
