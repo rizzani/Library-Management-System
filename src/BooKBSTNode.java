@@ -4,34 +4,34 @@ public class BooKBSTNode {
     private BooKBSTNode left, right;
 
     public BooKBSTNode(Book book) {
-        this.title = book.getTitle();
+        this.title = book.GetTitle();
         this.book = book;
         this.left = null;
         this.right = null;
     }
     //getters
-    public String getTitle() {
+    public String GetTitle() {
         return title;
     }
 
-    public Book getBook() {
+    public Book GetBook() {
         return book;
     }
 
-    public BooKBSTNode getLeft() {
+    public BooKBSTNode GetLeft() {
         return left;
     }
 
-    public BooKBSTNode getRight() {
+    public BooKBSTNode GetRight() {
         return right;
     }
 
     //setters
-    public void setLeft(BooKBSTNode left) {
+    public void SetLeft(BooKBSTNode left) {
         this.left = left;
     }
 
-    public void setRight(BooKBSTNode right) {
+    public void SetRight(BooKBSTNode right) {
         this.right = right;
     }
 }

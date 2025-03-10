@@ -10,48 +10,48 @@ public class Patron {
     public Patron(String fName, String lName) {
         this.fName = fName;
         this.lName = lName;
-        this.cardNumber = generateCardNumber();
+        this.cardNumber = GenerateCardNumber();
         this.books = new BookLinkedList();
-        this.password = generatePassword();
+        this.password = GeneratePassword();
     }
     //getters
-    public String getName() {
+    public String GetName() {
         return fName+" "+lName;
     }
-    public String getCardNumber() {
+    public String GetCardNumber() {
         return cardNumber;
     }
-    public String getPassword() {
+    public String GetPassword() {
         return password;
     }
-    public BookLinkedList getBooks() {
+    public BookLinkedList GetBooks() {
         return books;
     }
 
     //settters
 
-    public void borrowBook(Book book) {
+    public void BorrowBook(Book book) {
         this.books.InsertAtBack(book);
     }
-    public String getPasswordHash() {
-        return generatePassword();
+    public String GetPasswordHash() {
+        return GeneratePassword();
     }
 
-    public void display(){
-        System.out.println("Name: " + this.getName());
+    public void Display(){
+        System.out.println("Name: " + this.GetName());
         System.out.println("Card Number: " + cardNumber);
         if (this.books != null) {
             System.out.println("Books: ");
-            Book[] allBooks = books.getAllBooks();
+            Book[] allBooks = books.GetAllBooks();
             for (int i = 0; i < allBooks.length; i++) {
-                System.out.println(allBooks[i].getTitle());
+                System.out.println(allBooks[i].GetTitle());
             }
         }else {
             System.out.println("No books on Loan");
         }
     }
 
-    public String generatePassword() {
+    public String GeneratePassword() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
         StringBuilder password = new StringBuilder(8);
@@ -64,7 +64,7 @@ public class Patron {
         return password.toString();
     }
 
-    public String generateCardNumber() {
+    public String GenerateCardNumber() {
         String characters = "0123456789";
         Random random = new Random();
         StringBuilder number = new StringBuilder(5);

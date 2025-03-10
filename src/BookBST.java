@@ -4,83 +4,83 @@ import java.util.List;
 public class BookBST {
     private BooKBSTNode root;
 
-    public void insert(Book book) {
-        root = insertRec(root, book);
+    public void Insert(Book book) {
+        root = InsertRec(root, book);
     }
 
-    private BooKBSTNode insertRec(BooKBSTNode root, Book book) {
+    private BooKBSTNode InsertRec(BooKBSTNode root, Book book) {
         if (root == null) {
             return new BooKBSTNode(book);
         }
-        if (book.getTitle().toLowerCase().compareTo(root.getTitle().toLowerCase()) < 0) {
-            root.setLeft(insertRec(root.getLeft(), book));
+        if (book.GetTitle().toLowerCase().compareTo(root.GetTitle().toLowerCase()) < 0) {
+            root.SetLeft(InsertRec(root.GetLeft(), book));
         } else {
-            root.setRight(insertRec(root.getRight(), book));
+            root.SetRight(InsertRec(root.GetRight(), book));
         }
         return root;
     }
 
-    public void inorder() {
-        inorderRec(root);
+    public void Inorder() {
+        InorderRec(root);
     }
 
-    private void inorderRec(BooKBSTNode root) {
+    private void InorderRec(BooKBSTNode root) {
         if (root != null) {
-            inorderRec(root.getLeft());
+            InorderRec(root.GetLeft());
             System.out.println("------------------------------------------------");
-            root.getBook().display();
+            root.GetBook().Display();
             System.out.println("------------------------------------------------");
-            inorderRec(root.getRight());
+            inorderRec(root.GetRight());
         }
     }
 
-    public Book searchByTitle(String title) {
-        return searchTitleRec(root, title);
+    public Book SearchByTitle(String title) {
+        return SearchTitleRec(root, title);
     }
 
-    private Book searchTitleRec(BooKBSTNode root, String title) {
+    private Book SearchTitleRec(BooKBSTNode root, String title) {
         if (root == null) {
             return null;
         }
-        int comparison = title.toLowerCase().compareTo(root.getTitle().toLowerCase());
+        int comparison = title.toLowerCase().compareTo(root.GetTitle().toLowerCase());
         if (comparison == 0) {
-            return root.getBook();
+            return root.GetBook();
         } else if (comparison < 0) {
-            return searchTitleRec(root.getLeft(), title);
+            return searchTitleRec(root.GetLeft(), title);
         } else {
-            return searchTitleRec(root.getRight(), title);
+            return searchTitleRec(root.GetRight(), title);
         }
     }
 
-    public List<Book> searchByAuthor(String author) {
+    public List<Book> SearchByAuthor(String author) {
         List<Book> books = new ArrayList<>();
-        searchAuthorRec(root, author.toLowerCase(), books);
+        SearchAuthorRec(root, author.toLowerCase(), books);
         return books;
     }
 
-    private void searchAuthorRec(BooKBSTNode root, String author, List<Book> books) {
+    private void SearchAuthorRec(BooKBSTNode root, String author, List<Book> books) {
         if (root != null) {
-            searchAuthorRec(root.getLeft(), author, books);
-            if (root.getBook().getAuthor().toLowerCase().contains(author)) {
-                books.add(root.getBook());
+            SearchAuthorRec(root.GetLeft(), author, books);
+            if (root.GetBook().GetAuthor().toLowerCase().contains(author)) {
+                books.Add(root.GetBook());
             }
-            searchAuthorRec(root.getRight(), author, books);
+            SearchAuthorRec(root.GetRight(), author, books);
         }
     }
 
-    public Book searchByISBN(String isbn) { // Changed int to String
-        return searchISBNRec(root, isbn);
+    public Book SearchByISBN(String isbn) { // Changed int to String
+        return SearchISBNRec(root, isbn);
     }
 
-    private Book searchISBNRec(BooKBSTNode root, String isbn) { // Changed int to String
+    private Book SearchISBNRec(BooKBSTNode root, String isbn) { // Changed int to String
         if (root == null) {
             return null;
         }
-        if (root.getBook().getIsbn().equals(isbn)) { // Changed from == to .equals()
-            return root.getBook();
+        if (root.GetBook().GetIsbn().equals(isbn)) { // Changed from == to .equals()
+            return root.GetBook();
         }
-        Book leftResult = searchISBNRec(root.getLeft(), isbn);
+        Book leftResult = SearchISBNRec(root.GetLeft(), isbn);
         if (leftResult != null) return leftResult;
-        return searchISBNRec(root.getRight(), isbn);
+        return SearchISBNRec(root.GetRight(), isbn);
     }
 }

@@ -6,21 +6,21 @@ public class PatronNode {
         this.person = person;
         this.nextNode = null;
     }
-    public Patron getPerson() {
+    public Patron GetPerson() {
         return person;
     }
-    public void setPerson(Patron person) {
+    public void SetPerson(Patron person) {
         this.person = person;
     }
-    public PatronNode getNextNode() {
+    public PatronNode GetNextNode() {
         return nextNode;
     }
-    public void setNextNode(PatronNode nextNode) {
+    public void SetNextNode(PatronNode nextNode) {
         this.nextNode = nextNode;
     }
-    public void display(){
+    public void Display(){
         System.out.println("===========================================");
-        person.display();
+        person.Display();
         System.out.println("===========================================");
     }
 

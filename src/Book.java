@@ -29,40 +29,40 @@ public class Book {
     }
 
     // Getters
-    public String getTitle() {
+    public String GetTitle() {
         return title_;
     }
 
-    public String getAuthor() {
+    public String GetAuthor() {
         return author;
     }
 
-    public String getIsbn() {  // Changed return type
+    public String GetIsbn() {  // Changed return type
         return isbn;
     }
 
-    public boolean getIsAvailable() {
+    public boolean GetIsAvailable() {
         return isAvailable;
     }
 
     // Setters
-    public void setTitle(String title_) {
+    public void SetTitle(String title_) {
         this.title_ = title_;
     }
 
-    public void setAuthor(String author) {
+    public void SetAuthor(String author) {
         this.author = author;
     }
 
-    public void setIsbn(String isbn) { // Changed parameter type
+    public void SetIsbn(String isbn) { // Changed parameter type
         this.isbn = isbn;
     }
 
-    public void setAvailable(boolean available) {
+    public void SetAvailable(boolean available) {
         isAvailable = available;
     }
 
-    public void display() {
+    public void Display() {
         System.out.println("Book Title: " + title_);
         System.out.println("Book Author: " + author);
         System.out.println("Book ISBN: " + isbn);

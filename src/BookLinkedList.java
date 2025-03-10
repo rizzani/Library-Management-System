@@ -30,7 +30,7 @@ public class BookLinkedList {
         if (IsEmpty()) {
             head = temp;
         } else {
-            temp.setNextNode(head);
+            temp.SetNextNode(head);
             head = temp;
         }
     }
@@ -43,11 +43,11 @@ public class BookLinkedList {
         } else {
             BookNode traverseTemp = head;
 
-            while (traverseTemp.getNextNode() != null) {
-                traverseTemp = traverseTemp.getNextNode();
+            while (traverseTemp.GetNextNode() != null) {
+                traverseTemp = traverseTemp.GetNextNode();
             }
 
-            traverseTemp.setNextNode(temp);
+            traverseTemp.SetNextNode(temp);
         }
     }
 
@@ -67,7 +67,7 @@ public class BookLinkedList {
         while(trav !=null)
         {
             trav.display();
-            trav = trav.getNextNode();
+            trav = trav.GetNextNode();
         }
     }
 
@@ -76,25 +76,61 @@ public class BookLinkedList {
         int count = 0;
 
         BookNode trav = head;
-        while(trav !=null)
+        while(trav != null)
         {
             count ++;
-            trav = trav.getNextNode();
+            trav = trav.GetNextNode();
         }
         return count;
     }
 
-    public Book[] getAllBooks() {
+    public Book[] GetAllBooks() {
         int size = CountNodes();
         Book[] books = new Book[size];
         BookNode trav = head;
         int index = 0;
 
         while (trav != null) {
-            books[index++] = trav.getData();
-            trav = trav.getNextNode();
+            books[index++] = trav.GetData();
+            trav = trav.GetNextNode();
         }
 
         return books;
+    }
+
+    public int TotalBooksAvailable()//total books in the library
+    {
+        int count = 0;
+
+        BookNode trav = head;
+        while(trav != null)
+        {
+            Book currentBook = trav.GetData();
+            if(currentBook.GetIsAvailable())
+            {
+                count++;
+            }
+            trav = trav.GetNextNode();
+        }
+
+        return count;
+    }
+
+    public int TotalBooksUnavailable()//total books are checked out by patrons
+    {
+        int count = 0;
+
+        BookNode trav = head;
+        while(trav != null)
+        {
+            Book currentBook = trav.GetData();
+            if(!currentBook.GetIsAvailable())
+            {
+                count++;
+            }
+            trav = trav.GetNextNode();
+        }
+
+        return count;
     }
 }

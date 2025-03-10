@@ -10,7 +10,7 @@ public class Main {
         PatronLinkList patronList = new PatronLinkList();
         Scanner scanner = new Scanner(System.in);
         new Add(bookBST,patronList);
-        while (true) {
+        /*while (true) {
             System.out.println("\n=== Book & Patron Management System ===");
             System.out.println("1. Insert a book");
             System.out.println("2. Search book by Title");
@@ -34,15 +34,15 @@ public class Main {
                     String author = scanner.nextLine();
                     System.out.print("Enter ISBN: ");
                     String isbn = scanner.nextLine();
-                    bookBST.insert(new Book(title, author, isbn, true));
+                    bookBST.Insert(new Book(title, author, isbn, true));
                     System.out.println("Book inserted successfully!");
                     break;
                 case 2:
                     System.out.print("Enter title to search: ");
                     title = scanner.nextLine();
-                    Book foundBook = bookBST.searchByTitle(title);
+                    Book foundBook = bookBST.SearchByTitle(title);
                     if (foundBook != null) {
-                        foundBook.display();
+                        foundBook.Display();
                     } else {
                         System.out.println("Book not found.");
                     }
@@ -50,8 +50,8 @@ public class Main {
                 case 3:
                     System.out.print("Enter author to search: ");
                     author = scanner.nextLine();
-                    List<Book> booksByAuthor = bookBST.searchByAuthor(author);
-                    if (!booksByAuthor.isEmpty()) {
+                    List<Book> booksByAuthor = bookBST.SearchByAuthor(author);
+                    if (!booksByAuthor.IsEmpty()) {
                         booksByAuthor.forEach(Book::display);
                     } else {
                         System.out.println("No books found by this author.");
@@ -60,9 +60,9 @@ public class Main {
                 case 4:
                     System.out.print("Enter ISBN to search: ");
                     isbn = scanner.nextLine(); // Changed from int to String
-                    foundBook = bookBST.searchByISBN(isbn);
+                    foundBook = bookBST.SearchByISBN(isbn);
                     if (foundBook != null) {
-                        foundBook.display();
+                        foundBook.Display();
                     } else {
                         System.out.println("Book not found.");
                     }
@@ -76,29 +76,29 @@ public class Main {
                     System.out.print("Enter Patron Last Name: ");
                     String lName = scanner.nextLine();
                     Patron newPatron = new Patron(fName,lName);
-                    patronList.insertAtBack(newPatron);
+                    patronList.InsertAtBack(newPatron);
                     System.out.println("Patron added successfully");
-                    System.out.println("Card Number: " + newPatron.getCardNumber());
-                    System.out.print("Assigned Password: " + newPatron.getPassword());
+                    System.out.println("Card Number: " + newPatron.GetCardNumber());
+                    System.out.print("Assigned Password: " + newPatron.GetPassword());
                     break;
 
                 case 7: // Display All Patrons
                     System.out.println("\n=== Registered Patrons ===");
-                    patronList.display();
+                    patronList.Display();
                     break;
 
                 case 8: // Borrow a Book
                     System.out.print("Enter Patron Card Number: ");
                     String patronCard = scanner.nextLine();
-                    PatronNode patronNode = patronList.getHead();
+                    PatronNode patronNode = patronList.GetHead();
                     Patron borrower = null;
 
                     while (patronNode != null) {
-                        if (patronNode.getPerson().getCardNumber().equals(patronCard)) {
-                            borrower = patronNode.getPerson();
+                        if (patronNode.GetPerson().GetCardNumber().equals(patronCard)) {
+                            borrower = patronNode.GetPerson();
                             break;
                         }
-                        patronNode = patronNode.getNextNode();
+                        patronNode = patronNode.GetNextNode();
                     }
 
                     if (borrower == null) {
@@ -108,11 +108,11 @@ public class Main {
 
                     System.out.print("Enter Book Title to Borrow: ");
                     title = scanner.nextLine();
-                    foundBook = bookBST.searchByTitle(title);
+                    foundBook = bookBST.SearchByTitle(title);
 
-                    if (foundBook != null && foundBook.getIsAvailable()) {
-                        borrower.borrowBook(foundBook);
-                        foundBook.setAvailable(false);
+                    if (foundBook != null && foundBook.GetIsAvailable()) {
+                        borrower.BorrowBook(foundBook);
+                        foundBook.SetAvailable(false);
                         System.out.println("Book borrowed successfully!");
                     } else {
                         System.out.println("Book is not available or does not exist.");
@@ -127,6 +127,7 @@ public class Main {
                 default:
                     System.out.println("Invalid choice! Please try again.");
             }
-        }
+        }*/
+
     }
 }

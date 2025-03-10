@@ -7,34 +7,34 @@ public class PatronLinkList {
         head = null;
     }
 
-    public PatronNode getHead() {
+    public PatronNode GetHead() {
         return head;
     }
 
-    public void setHead(PatronNode head) {
+    public void SetHead(PatronNode head) {
         this.head = head;
     }
 
-    public boolean isEmpty() {
+    public boolean IsEmpty() {
         return (head == null);
     }
 
-    public void insertAtBack(Patron dataToInsert) {
+    public void InsertAtBack(Patron dataToInsert) {
         PatronNode temp = new PatronNode(dataToInsert);
 
-        if (isEmpty()) {
+        if (IsEmpty()) {
             head = temp;
         } else {
             PatronNode traverseTemp = head;
 
-            while (traverseTemp.getNextNode() != null) {
-                traverseTemp = traverseTemp.getNextNode();
+            while (traverseTemp.GetNextNode() != null) {
+                traverseTemp = traverseTemp.GetNextNode();
             }
 
-            traverseTemp.setNextNode(temp);
+            traverseTemp.SetNextNode(temp);
         }
     }
-    public int countNodes()
+    public int CountNodes()
     {
         int count = 0;
 
@@ -42,21 +42,21 @@ public class PatronLinkList {
         while(trav !=null)
         {
             count ++;
-            trav = trav.getNextNode();
+            trav = trav.GetNextNode();
         };
         return count;
     }
 
-    public void display() {
-        if (isEmpty()) {
+    public void Display() {
+        if (IsEmpty()) {
             System.out.println("No patrons in the list.");
             return;
         }
 
         PatronNode current = head;
         while (current != null) {
-            current.display();
-            current = current.getNextNode();
+            current.Display();
+            current = current.GetNextNode();
         }
     }
 }
