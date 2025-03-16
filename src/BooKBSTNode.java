@@ -34,5 +34,9 @@ public class BooKBSTNode {
     public void setRight(BooKBSTNode right) {
         this.right = right;
     }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
 }
 

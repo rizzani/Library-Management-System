@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class BookLinkedList {
 
     private BookNode head;
@@ -51,28 +53,53 @@ public class BookLinkedList {
         }
     }
 
+    public void remove(Book bookToRemove) {
+        if (IsEmpty()) {
+            System.out.println("⚠️ List is empty. No book to remove..");
+            return;
+        }
+
+
+        if (head.getBook().equals(bookToRemove)) {
+            head = head.getNextNode();
+            return;
+        }
+
+        BookNode prev = head;
+        BookNode current = head.getNextNode();
+
+        while (current != null) {
+            if (current.getBook().equals(bookToRemove)) {
+                prev.setNextNode(current.getNextNode());
+                return;
+            }
+            prev = current;
+            current = current.getNextNode();
+        }
+
+        System.out.println("⚠️ Book not found in the list.");
+    }
+
     public boolean IsEmpty() {
         return (head == null);
     }
 
-    public void DisplayList()
-    {
+    public void DisplayList(boolean display ) {
         if(IsEmpty())
         {
-            System.err.println("The list is empty! Nothing to display.");
+            System.err.println("The list is empty!.");
             return;
         }
 
         BookNode trav = head;
         while(trav !=null)
         {
-            trav.display();
+            trav.display(display);
             trav = trav.getNextNode();
         }
     }
 
-    public int CountNodes()
-    {
+    public int CountNodes() {
         int count = 0;
 
         BookNode trav = head;
@@ -96,5 +123,60 @@ public class BookLinkedList {
         }
 
         return books;
+    }
+    public void DisplayListWithNumbers() {
+        if (IsEmpty()) {
+            System.out.println("The list is empty!");
+            return;
+        }
+
+        BookNode trav = head;
+        int index = 1;
+        while (trav != null) {
+            System.out.println(index + ". " + trav.getBook().toString());
+            trav = trav.getNextNode();
+            index++;
+        }
+    }
+
+    public Book RemoveByNumber(Scanner scanner) {
+        if (IsEmpty()) {
+            System.out.println("The list is empty!");
+            return null;
+        }
+
+        DisplayListWithNumbers();
+        System.out.print("Enter the number of the book to remove: ");
+        scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+
+        if (choice < 1 || choice > CountNodes()) {
+            System.out.println("Invalid choice!");
+            return null;
+        }
+
+        if (choice == 1) {
+            Book temp = head.getBook();
+            head = head.getNextNode();
+            System.out.println("Book removed successfully.");
+            return temp;
+        }
+
+        BookNode prev = head;
+        BookNode current = head.getNextNode();
+        int index = 2;
+
+        while (current != null) {
+            if (index == choice) {
+                Book temp = current.getBook();
+                prev.setNextNode(current.getNextNode());
+                System.out.println("Book removed successfully.");
+                return temp;
+            }
+            prev = current;
+            current = current.getNextNode();
+            index++;
+        }
+        return null;
     }
 }

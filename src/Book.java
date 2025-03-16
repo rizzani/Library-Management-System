@@ -15,11 +15,11 @@ public class Book {
     }
 
     // Primary constructor
-    public Book(String title_, String author, String isbn, boolean isAvailable) {
+    public Book(String title_, String author, String isbn) {
         this.title_ = title_;
         this.author = author;
         this.isbn = isbn;
-        this.isAvailable = isAvailable;
+        this.isAvailable = true;
         this.waitList = new Queue();
     }
 
@@ -36,17 +36,17 @@ public class Book {
     public String getTitle() {
         return title_;
     }
-
     public String getAuthor() {
         return author;
     }
-
-    public String getIsbn() {  // Changed return type
+    public String getISBN() {  // Changed return type
         return isbn;
     }
-
-    public boolean getIsAvailable() {
+    public boolean IsAvailable() {
         return isAvailable;
+    }
+    public Queue getWaitList() {
+        return waitList;
     }
 
     // Setters
@@ -66,15 +66,27 @@ public class Book {
         isAvailable = available;
     }
 
-    public void display() {
+    public void display(boolean display) {
         System.out.println("Book Title: " + title_);
         System.out.println("Book Author: " + author);
         System.out.println("Book ISBN: " + isbn);
-        System.out.println(isAvailable ? "Book is available" : "Book is not available");
-        System.out.println(waitList.isEmpty() ? "Waitlist is empty" : waitList.count() + " Patrons on the waitlist");
+        if (display) {
+            System.out.println(isAvailable ? "Book is available" : "Book is not available");
+            System.out.println(waitList.isEmpty() ? "Waitlist is empty" : waitList.count() + " Patrons on the waitlist");
+        }
+
     }
 
     public void addWaitList(Patron patron) {
         this.waitList.enqueue(patron);
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;  // Check if both references point to the same object
+        if (obj == null || getClass() != obj.getClass()) return false; // Ensure obj is not null and is the same class
+
+        Book book = (Book) obj; // Cast obj to a Book object
+        return title_.equals(book.title_) && author.equals(book.author) && isbn.equals(book.isbn);
+    }
+
 }

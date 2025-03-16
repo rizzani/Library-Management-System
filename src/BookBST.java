@@ -28,7 +28,7 @@ public class BookBST {
         if (root != null) {
             inorderRec(root.getLeft());
             System.out.println("------------------------------------------------");
-            root.getBook().display();
+            root.getBook().display(true);
             System.out.println("------------------------------------------------");
             inorderRec(root.getRight());
         }
@@ -76,11 +76,49 @@ public class BookBST {
         if (root == null) {
             return null;
         }
-        if (root.getBook().getIsbn().equals(isbn)) { // Changed from == to .equals()
+        if (root.getBook().getISBN().equals(isbn)) { // Changed from == to .equals()
             return root.getBook();
         }
         Book leftResult = searchISBNRec(root.getLeft(), isbn);
         if (leftResult != null) return leftResult;
         return searchISBNRec(root.getRight(), isbn);
+    }
+
+    public void delete(Book book) {
+        root = deleteRec(root, book);
+    }
+
+    private BooKBSTNode deleteRec(BooKBSTNode root, Book book) {
+        if (root == null) return null;
+
+        int comparison = book.getTitle().toLowerCase().compareTo(root.getTitle().toLowerCase());
+
+        if (comparison < 0) {
+            root.setLeft(deleteRec(root.getLeft(), book));
+        } else if (comparison > 0) {
+            root.setRight(deleteRec(root.getRight(), book));
+        } else {
+            if (book.equals(root.getBook())) {
+                if (root.getLeft() == null && root.getRight() == null) {
+                    return null;
+                }
+                if (root.getLeft() == null) {
+                    return root.getRight();
+                } else if (root.getRight() == null) {
+                    return root.getLeft();
+                }
+                BooKBSTNode successor = minValueNode(root.getRight());
+                root.setBook(successor.getBook());
+                root.setRight(deleteRec(root.getRight(), successor.getBook()));
+            }
+        }
+        return root;
+    }
+
+    private BooKBSTNode minValueNode(BooKBSTNode node) {
+        while (node.getLeft() != null) {
+            node = node.getLeft();
+        }
+        return node;
     }
 }

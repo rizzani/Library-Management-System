@@ -40,9 +40,9 @@ public class BookNode {
         this.book = book;
     }
 
-    public void display(){
+    public void display(boolean display){
         System.out.println("===========================================");
-        book.display();
+        book.display(display);
         System.out.println("===========================================");
     }
 }

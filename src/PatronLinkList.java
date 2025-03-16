@@ -34,8 +34,7 @@ public class PatronLinkList {
             traverseTemp.setNextNode(temp);
         }
     }
-    public int countNodes()
-    {
+    public int countNodes() {
         int count = 0;
 
         PatronNode trav = head;
@@ -58,5 +57,25 @@ public class PatronLinkList {
             current.display();
             current = current.getNextNode();
         }
+    }
+
+    public Patron findPatron(String cardNumber) {
+        if (isEmpty()) {
+            System.out.println("No patrons in the list.");
+            return null;
+        }
+
+        PatronNode current = head;
+
+        while (current != null) {
+            if (current.getPatron().getCardNumber().equals(cardNumber)) {
+                return current.getPatron();
+            }
+            current = current.getNextNode();
+        }
+
+        System.out.println("Patron not found.");
+        return null;
+
     }
 }

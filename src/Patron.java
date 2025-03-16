@@ -5,7 +5,10 @@ public class Patron {
     private String lName;
     private String cardNumber;
     private BookLinkedList books;
+    private Stack checkout;
     private String password;
+    private boolean isAdmin;
+    private boolean firstLogin;
 
     public Patron(String fName, String lName) {
         this.fName = fName;
@@ -13,6 +16,8 @@ public class Patron {
         this.cardNumber = generateCardNumber();
         this.books = new BookLinkedList();
         this.password = generatePassword();
+        this.isAdmin = false;
+        this.firstLogin = true;
     }
     //getters
     public String getName() {
@@ -27,16 +32,24 @@ public class Patron {
     public BookLinkedList getBooks() {
         return books;
     }
+    public Stack getCheckout() {
+        return checkout;
+    }
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+    public boolean isFirstLogin() {
+        return firstLogin;
+    }
 
     //settters
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public void borrowBook(Book book) {
         this.books.InsertAtBack(book);
     }
-    public String getPasswordHash() {
-        return generatePassword();
-    }
-
     public void display(){
         System.out.println("Name: " + this.getName());
         System.out.println("Card Number: " + cardNumber);
@@ -75,5 +88,13 @@ public class Patron {
             number.append(characters.charAt(index));
         }
         return number.toString();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;  // Check if both references point to the same object
+        if (obj == null || getClass() != obj.getClass()) return false; // Ensure obj is not null and is the same class
+
+        Patron patron = (Patron) obj; // Cast obj to a Book object
+        return cardNumber.equals(patron.cardNumber) && fName.equals(patron.fName) && lName.equals(patron.lName);
     }
 }

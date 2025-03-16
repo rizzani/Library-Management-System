@@ -50,7 +50,7 @@ public class Queue {
     }
     public int count() {
         int nodeCount = 0;
-        PatronNode currentNode = this.firstNode; // Start from the first node
+        PatronNode currentNode = this.firstNode;
 
         while (currentNode != null) {
             nodeCount++;
