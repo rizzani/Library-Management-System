@@ -78,7 +78,7 @@ public class LinkedList {
     {
         if(IsEmpty())
         {
-            System.err.println("The list is empty! Nothing to display.");
+            System.err.println("The list is empty! Nothing to Admindisplay.");
             return;
         }
 

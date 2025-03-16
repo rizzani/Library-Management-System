@@ -9,7 +9,7 @@ public class Main {
         Book book4 = new Book("Big Hill", "Doe Brown", 12353, true);
         Book book5 = new Book("Yellow Car", "John Doe", 12354, false);
 
-        list.DisplayList();//display list before adding any books/nodes
+        list.DisplayList();//Admindisplay list before adding any books/nodes
         System.out.println("Number of elements in list: " + list.CountNodes());
 
 
