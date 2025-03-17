@@ -18,8 +18,15 @@ public class Patron {
         this.password = generatePassword();
         this.isAdmin = false;
         this.firstLogin = true;
+        this.checkout = new Stack();
     }
     //getters
+    public String getfName() {
+        return fName;
+    }
+    public String getlName() {
+        return lName;
+    }
     public String getName() {
         return fName+" "+lName;
     }
@@ -46,13 +53,29 @@ public class Patron {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    public void setfName(String fName) {
+        this.fName = fName;
+    }
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+    public void setFirstLogin(boolean firstLogin) {
+        this.firstLogin = firstLogin;
+    }
     public void borrowBook(Book book) {
         this.books.InsertAtBack(book);
+        book.setAvailable(false);
     }
     public void display(){
         System.out.println("Name: " + this.getName());
         System.out.println("Card Number: " + cardNumber);
+        System.out.println("Password: " + password); // to be remove
         if (this.books != null) {
             System.out.println("Books: ");
             Book[] allBooks = books.getAllBooks();

@@ -133,7 +133,7 @@ public class BookLinkedList {
         BookNode trav = head;
         int index = 1;
         while (trav != null) {
-            System.out.println(index + ". " + trav.getBook().toString());
+            System.out.println(index + ". " + trav.getBook().getTitle());
             trav = trav.getNextNode();
             index++;
         }
@@ -178,5 +178,16 @@ public class BookLinkedList {
             index++;
         }
         return null;
+    }
+
+    public BookBST getBookBST() {
+        BookBST bst = new BookBST();
+        BookNode trav = head;
+        while(trav !=null)
+        {
+            bst.insert(trav.getBook());
+            trav = trav.getNextNode();
+        }
+        return bst;
     }
 }

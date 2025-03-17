@@ -63,7 +63,7 @@ public class Book {
     }
 
     public void setAvailable(boolean available) {
-        isAvailable = available;
+        this.isAvailable = available;
     }
 
     public void display(boolean display) {
@@ -71,7 +71,7 @@ public class Book {
         System.out.println("Book Author: " + author);
         System.out.println("Book ISBN: " + isbn);
         if (display) {
-            System.out.println(isAvailable ? "Book is available" : "Book is not available");
+            System.out.println(this.isAvailable ? "Book is available" : "Book is not available");
             System.out.println(waitList.isEmpty() ? "Waitlist is empty" : waitList.count() + " Patrons on the waitlist");
         }
 

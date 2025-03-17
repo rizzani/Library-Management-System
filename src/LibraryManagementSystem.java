@@ -6,14 +6,19 @@ public class LibraryManagementSystem {
    private BookBST bookBST;
    private PatronLinkList patronList;
    private static Scanner scanner;
+   private String patron;
+   private String book;
 
    public LibraryManagementSystem() {
        this.books = new BookLinkedList();
        this.patronList = new PatronLinkList();
        this.bookBST = new BookBST();
        this.scanner = new Scanner(System.in);
+       this.patron = "patronList.txt";
+       this.book = "bookList.txt";
        Add.patrons(patronList);
        Add.books(bookBST,books);
+
    }
 
     public static void clearScreen() {
@@ -54,6 +59,7 @@ public class LibraryManagementSystem {
 
     public void mainMenu() {
         while (true) {
+            load();
             clearScreen();
             printHeader("🔐 Welcome to Library System");
 
@@ -78,6 +84,32 @@ public class LibraryManagementSystem {
         }
     }
     //Method for Main Menu
+    public void signUp() {
+        clearScreen();
+        printHeader("📝 Sign Up");
+
+        // Collect user details
+        System.out.print("\n👉 Enter First Name: ");
+        String fName = scanner.nextLine().trim();
+        System.out.print("👉 Enter Last Name: ");
+        String lName = scanner.nextLine().trim();
+
+        // Create a new patron and add to the list
+        Patron patron = new Patron(fName, lName);
+        patronList.insertAtBack(patron);
+
+        // Display success message and login credentials
+        System.out.println("\n✅ Account created successfully!\n");
+
+        printHeader("🔐 Login Credentials");
+        printSubHeader("📇 Your Card Number: " + patron.getCardNumber());
+        printSubHeader("🔑 Temporary Password: " + patron.getPassword());
+
+        System.out.println("\n💡 Please change your password upon first login for security.");
+        save();
+    }
+
+
     public void login() {
         clearScreen();
         printHeader("🔑 Login");
@@ -85,27 +117,32 @@ public class LibraryManagementSystem {
         System.out.print("📛 Enter Card Number: ");
         String cardNumber = scanner.nextLine().trim();
 
+        Patron patron = patronList.findPatron(cardNumber);
+        if (patron == null) {
+            return;
+        }
+
         System.out.print("🔐 Enter Password: ");
         String password = scanner.nextLine().trim();
 
-        // Check if the card number and password match a patron's credentials
-        Patron patron = patronList.findPatron(cardNumber);
-
         if (patron != null && patron.getPassword().equals(password)) {
             System.out.println("✅ Login successful!");
-            System.out.println("Welcome, " + patron.getName() + "!");
+            System.out.println("Welcome, " + patron.getName() + "\n");
 
             user(patron);
+            save();
         } else {
-            System.out.println("⚠ Invalid card number or password. Please try again.");
+            System.out.println("⚠ Incorrect Password!.");
         }
 
        // System.out.println("\nPress Enter to continue...");
        // scanner.nextLine();
     }
+    //Methods For Login
     public void user(Patron patron) {
         if (patron.isFirstLogin()){
             changePassword(patron);
+            patron.setFirstLogin(false);
         }
         clearScreen();
         printHeader("👤 User Dashboard: " + patron.getName());
@@ -115,7 +152,7 @@ public class LibraryManagementSystem {
             patronDisplay(patron);
         }
     }
-    private static void changePassword(Patron patron) {
+    public void changePassword(Patron patron) {
         clearScreen();
         printHeader("🔑 Change Password");
 
@@ -125,6 +162,150 @@ public class LibraryManagementSystem {
         patron.setPassword(newPassword);
 
         System.out.println("\n✅ Password changed successfully!");
+    }
+    public void patronDisplay(Patron patron) {
+        while (true) {
+            clearScreen();
+            printSubHeader("📖 Patron Library System");
+            System.out.println("1️⃣ Search for a Book");
+            System.out.println("2️⃣ View All Books");
+            System.out.println("3️⃣ Add Book to Checkout");
+            System.out.println("4️⃣ Undo Last Book");
+            System.out.println("5️⃣ Finalize Checkout");
+            System.out.println("6️⃣ Return a Book");
+            System.out.println("7️⃣ View My Borrowed Books");
+            System.out.println("8️⃣ Change Password");
+            System.out.println("9️⃣ Exit");
+
+            System.out.print("\nEnter your choice: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1": searchSystem(false); break;
+                case "2": bookBST.inorder(); break;
+                case "3": softCheckOutBook(patron); break;
+                case "4": undoLastBook(patron); break;
+                case "5": finalizeCheckout(patron); break;
+                case "6": returnBook(patron); break;
+                case "7": viewBorrowedBooks(patron); break;
+                case "8": changePassword(patron); break;
+                case "9":
+                    System.out.println("\n📚 Exiting... Goodbye!");
+                    return;
+                default:
+                    System.out.println("⚠ Invalid choice! Please select 1-9.");
+            }
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
+        }
+    }
+    public void softCheckOutBook(Patron patron) {
+        clearScreen();
+        printHeader("📖 Add Book to Checkout");
+        Book book = searchSystem(true);
+        if (book == null) {
+            return;
+        }
+        if (book.IsAvailable()) {
+            patron.getCheckout().push(book);
+            System.out.println("\n✅ '" + book.getTitle() + "' added to pending checkout.");
+        } else {
+            System.out.println("\n⚠ Book is unavailable would you like to go on the waitlist?. (" + book.getWaitList().count() + ") on the waitlist");
+            System.out.println("1. Join the Waitlist");
+            System.out.println("2. Add Next Book to Checkout");
+            System.out.println("3. Go Back");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    book.addWaitList(patron);
+                    break;
+                case "2":
+                    softCheckOutBook(patron);
+                    break;
+                case "3":
+                    System.out.println("👋 Exiting...");
+                    return;
+                default:
+                    System.out.println("⚠ Invalid choice! Please select 1-3.");
+            }
+        }
+    }
+    public void undoLastBook(Patron patron) {
+        if (!patron.getCheckout().isEmpty()) {
+            Book removedBook = patron.getCheckout().pop();
+            System.out.println("\n❌ '" + removedBook.getTitle() + "' removed from pending checkout.");
+        } else {
+            System.out.println("\n⚠ No books to undo.");
+        }
+    }
+    private void finalizeCheckout(Patron patron) {
+        clearScreen();
+        printHeader("✅ Finalize or ❌ Undo Checkout");
+
+        if (patron.getCheckout().isEmpty()) {
+            System.out.println("\n⚠ No books in pending checkout.");
+            return;
+        }
+
+        printSubHeader("📚 Pending Books for Checkout:");
+        Stack tempStack = new Stack();
+        while (!patron.getCheckout().isEmpty()) {
+            Book book = patron.getCheckout().pop();
+            System.out.println("📖 " + book.getTitle());
+            tempStack.push(book);
+        }
+
+        while (!tempStack.isEmpty()) {
+            patron.getCheckout().push(tempStack.pop());
+        }
+
+        System.out.println("\n1️⃣ Finalize Checkout");
+        System.out.println("2️⃣ Undo Last Added Book");
+        System.out.println("3️⃣ Cancel & Return");
+
+        System.out.print("\nChoose an option: ");
+        String choice = scanner.nextLine();
+
+        switch (choice) {
+            case "1":
+                checkOut(patron);
+                break;
+            case "2":
+                undoLastBook(patron);
+                break;
+            case "3":
+                System.out.println("\nReturning to menu...");
+                break;
+            default:
+                System.out.println("⚠ Invalid choice! Please select 1-3.");
+        }
+    }
+    public void checkOut(Patron patron) {
+        clearScreen();
+        while (!patron.getCheckout().isEmpty()) {
+            Book book = patron.getCheckout().pop();
+            patron.borrowBook(book);
+
+            System.out.println("✅ '" + book.getTitle() + "' checked out successfully!");
+        }
+    }
+    public void returnBook(Patron patron) {
+        clearScreen();
+        printHeader("📦 Return a Book");
+        System.out.print("\nEnter Choose One to return: ");
+        Book book = patron.getBooks().RemoveByNumber(scanner);
+        if (book != null) {
+            book.setAvailable(true);
+            System.out.println("\n✅ '" + book.getTitle() + "' returned successfully!");
+        } else {
+            System.out.println("\n⚠ You haven't borrowed this book.");
+        }
+    }
+    public void viewBorrowedBooks(Patron patron) {
+        clearScreen();
+        printHeader("📜 My Borrowed Books");
+        patron.getBooks().DisplayList(false);
     }
 
     public void adminDisplay(){
@@ -459,147 +640,7 @@ public class LibraryManagementSystem {
         }
     }
 
-    public void patronDisplay(Patron patron) {
-        while (true) {
-            clearScreen();
-            printHeader("📖 Patron Library System");
-            System.out.println("1️⃣ Search for a Book");
-            System.out.println("2️⃣ Add Book to Checkout");
-            System.out.println("3️⃣ Undo Last Book");
-            System.out.println("4️⃣ Finalize Checkout");
-            System.out.println("5️⃣ Return a Book");
-            System.out.println("6️⃣ View My Borrowed Books");
-            System.out.println("7️⃣ Exit");
 
-            System.out.print("\nEnter your choice: ");
-            String choice = scanner.nextLine();
-
-            switch (choice) {
-
-                case "1": searchSystem(false); break;
-                case "2": softCheckOutBook(patron); break;
-                case "3": undoLastBook(patron); break;
-                case "4": finalizeCheckout(patron); break;
-                case "5": returnBook(patron); break;
-                case "6": viewBorrowedBooks(patron); break;
-                case "7":
-                    System.out.println("\n📚 Exiting... Goodbye!");
-                    return;
-                default:
-                    System.out.println("⚠ Invalid choice! Please select 1-7.");
-            }
-            System.out.println("\nPress Enter to continue...");
-            scanner.nextLine();
-        }
-    }
-    public void softCheckOutBook(Patron patron) {
-        clearScreen();
-        printHeader("📖 Add Book to Checkout");
-        Book book = searchSystem(true);
-        if (book == null) {
-            return;
-        }
-        if (book.IsAvailable()) {
-            patron.getCheckout().push(book);
-            System.out.println("\n✅ '" + book.getTitle() + "' added to pending checkout.");
-        } else {
-            System.out.println("\n⚠ Book is unavailable would you like to go on the waitlist?. (" + book.getWaitList().count() + ") on the waitlist");
-            System.out.println("1. Join the Waitlist");
-            System.out.println("2. Add Next Book to Checkout");
-            System.out.println("3. Go Back");
-            String choice = scanner.nextLine();
-
-            switch (choice) {
-                case "1":
-                    book.addWaitList(patron);
-                    break;
-                case "2":
-                    softCheckOutBook(patron);
-                    break;
-                case "3":
-                    System.out.println("👋 Exiting...");
-                    return;
-                default:
-                    System.out.println("⚠ Invalid choice! Please select 1-3.");
-            }
-        }
-    }
-    public void undoLastBook(Patron patron) {
-        if (!patron.getCheckout().isEmpty()) {
-            Book removedBook = patron.getCheckout().pop();
-            System.out.println("\n❌ '" + removedBook.getTitle() + "' removed from pending checkout.");
-        } else {
-            System.out.println("\n⚠ No books to undo.");
-        }
-    }
-    private void finalizeCheckout(Patron patron) {
-        clearScreen();
-        printHeader("✅ Finalize or ❌ Undo Checkout");
-
-        if (patron.getCheckout().isEmpty()) {
-            System.out.println("\n⚠ No books in pending checkout.");
-            return;
-        }
-
-        System.out.println("\n📚 Pending Books for Checkout:");
-        Stack tempStack = new Stack();
-        while (!patron.getCheckout().isEmpty()) {
-            Book book = patron.getCheckout().pop();
-            System.out.println("📖 " + book.getTitle());
-            tempStack.push(book);
-        }
-
-        while (!tempStack.isEmpty()) {
-            patron.getCheckout().push(tempStack.pop());
-        }
-
-        System.out.println("\n1️⃣ Finalize Checkout");
-        System.out.println("2️⃣ Undo Last Added Book");
-        System.out.println("3️⃣ Cancel & Return");
-
-        System.out.print("\nChoose an option: ");
-        String choice = scanner.nextLine();
-
-        switch (choice) {
-            case "1":
-                checkOut(patron);
-                break;
-            case "2":
-                undoLastBook(patron);
-                break;
-            case "3":
-                System.out.println("\nReturning to menu...");
-                break;
-            default:
-                System.out.println("⚠ Invalid choice! Please select 1-3.");
-        }
-    }
-    public void checkOut(Patron patron) {
-       clearScreen();
-        while (!patron.getCheckout().isEmpty()) {
-            Book book = patron.getCheckout().pop();
-            patron.borrowBook(book);
-            book.setAvailable(false);
-            System.out.println("✅ '" + book.getTitle() + "' checked out successfully!");
-        }
-    }
-    public void returnBook(Patron patron) {
-        clearScreen();
-        printHeader("📦 Return a Book");
-        System.out.print("\nEnter Choose One to return: ");
-        Book book = patron.getBooks().RemoveByNumber(scanner);
-        if (book != null) {
-            book.setAvailable(true);
-            System.out.println("\n✅ '" + book.getTitle() + "' returned successfully!");
-        } else {
-            System.out.println("\n⚠ You haven't borrowed this book.");
-        }
-    }
-    public void viewBorrowedBooks(Patron patron) {
-        clearScreen();
-        printHeader("📜 My Borrowed Books");
-        patron.getBooks().DisplayList(false);
-    }
 
 
     public static void userInterface() {
@@ -621,5 +662,15 @@ public class LibraryManagementSystem {
         scanner.nextLine();
     }
 
+    public void save(){
+        FileManagement.savePatronLinkList(patronList,patron);
+        FileManagement.saveBookLinkedList(books,book);
 
+    }
+
+    public void load(){
+       this.patronList = FileManagement.loadPatronLinkList(patron);
+       this.books = FileManagement.loadBookLinkedList(book);
+       this.bookBST = books.getBookBST();
+    }
 }
