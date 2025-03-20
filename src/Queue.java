@@ -58,4 +58,16 @@ public class Queue {
         }
         return nodeCount;
     }
+
+    public Patron[] getAll(){
+        int size = this.count();
+        Patron[] patrons = new Patron[size];
+        int index = 0;
+        PatronNode currentNode = this.firstNode;
+        while (currentNode != null) {
+            patrons[index++] = currentNode.getPatron();
+            currentNode = currentNode.getNextNode();
+        }
+        return patrons;
+    }
 }

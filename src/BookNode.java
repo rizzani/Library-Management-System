@@ -15,8 +15,8 @@ public class BookNode {
     }
 
     //primary constructor 2 used 99% of the time
-    public BookNode(Book data){
-        this.book = new Book(data);
+    public BookNode(Book book){
+        this.book =book;
         nextNode = null;
     }
 

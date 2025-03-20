@@ -8,133 +8,45 @@ public class Main {
         LibraryManagementSystem lms = new LibraryManagementSystem();
         lms.mainMenu();
 
-//        BookLinkedList list = new BookLinkedList();
-//        BookBST bookBST = new BookBST();
-//        PatronLinkList patronList = new PatronLinkList();
-//        Scanner scanner = new Scanner(System.in);
-//        new Add(bookBST,patronList);
+//        Book book1 = new Book("The Catcher in the Rye", "J.D. Salinger", "9780316769488");
+//        Book book2 = new Book("To Kill a Mockingbird", "Harper Lee", "9780061120084");
+//        Book book3 = new Book("1984", "George Orwell", "9780451524935");
+//        Book book4 = new Book("Moby Dick", "Herman Melville", "9781503280786");
+//        Book book5 = new Book("The Great Gatsby", "F. Scott Fitzgerald", "9780743273565");
 //
-//        while (true) {
-//            System.out.println("\n=== Book & Patron Management System ===");
-//            System.out.println("1. Insert a book");
-//            System.out.println("2. Search book by Title");
-//            System.out.println("3. Search book by Author");
-//            System.out.println("4. Search book by ISBN");
-//            System.out.println("5. Display all books");
-//            System.out.println("6. Add a Patron");
-//            System.out.println("7. Display all Patrons");
-//            System.out.println("8. Borrow a Book");
-//            System.out.println("9. Exit");
-//            System.out.print("Enter your choice: ");
+//        Patron person1 = new Patron("John1", "Doe1");
+//        Patron person2 = new Patron("John2", "Doe2");
+//        Patron person3 = new Patron("John3", "Doe3");
+//        Patron person4 = new Patron("John4", "Doe4");
 //
-//            int choice = scanner.nextInt();
-//            scanner.nextLine();
+//        BookLinkedList books = new BookLinkedList();
 //
-//            switch (choice) {
-//                case 1:
-//                    System.out.print("Enter title: ");
-//                    String title = scanner.nextLine();
-//                    System.out.print("Enter author: ");
-//                    String author = scanner.nextLine();
-//                    System.out.print("Enter ISBN: ");
-//                    String isbn = scanner.nextLine();
-//                    bookBST.insert(new Book(title, author, isbn, true));
-//                    System.out.println("Book inserted successfully!");
-//                    break;
-//                case 2:
-//                    System.out.print("Enter title to search: ");
-//                    title = scanner.nextLine();
-//                    Book foundBook = bookBST.searchByTitle(title);
-//                    if (foundBook != null) {
-//                        foundBook.display();
-//                    } else {
-//                        System.out.println("Book not found.");
-//                    }
-//                    break;
-//                case 3:
-//                    System.out.print("Enter author to search: ");
-//                    author = scanner.nextLine();
-//                    List<Book> booksByAuthor = bookBST.searchByAuthor(author);
-//                    if (!booksByAuthor.isEmpty()) {
-//                        booksByAuthor.forEach(Book::display);
-//                    } else {
-//                        System.out.println("No books found by this author.");
-//                    }
-//                    break;
-//                case 4:
-//                    System.out.print("Enter ISBN to search: ");
-//                    isbn = scanner.nextLine(); // Changed from int to String
-//                    foundBook = bookBST.searchByISBN(isbn);
-//                    if (foundBook != null) {
-//                        foundBook.display();
-//                    } else {
-//                        System.out.println("Book not found.");
-//                    }
-//                    break;
-//                case 5:
-//                    bookBST.inorder();
-//                    break;
-//                case 6: // Add a Patron
-//                    System.out.print("Enter Patron First Name: ");
-//                    String fName = scanner.nextLine();
-//                    System.out.print("Enter Patron Last Name: ");
-//                    String lName = scanner.nextLine();
-//                    Patron newPatron = new Patron(fName,lName);
-//                    patronList.insertAtBack(newPatron);
-//                    System.out.println("Patron added successfully");
-//                    System.out.println("Card Number: " + newPatron.getCardNumber());
-//                    System.out.print("Assigned Password: " + newPatron.getPassword());
-//                    break;
+//        books.InsertAtBack(book1);
+//        books.InsertAtBack(book2);
+//        books.InsertAtBack(book3);
+//        books.InsertAtBack(book4);
+//        books.InsertAtBack(book5);
 //
-//                case 7: // Display All Patrons
-//                    System.out.println("\n=== Registered Patrons ===");
-//                    patronList.display();
-//                    break;
+//        book1.addWaitList(person1);
+//        book1.addWaitList(person2);
 //
-//                case 8: // Borrow a Book
-//                    System.out.print("Enter Patron Card Number: ");
-//                    String patronCard = scanner.nextLine();
-//                    PatronNode patronNode = patronList.getHead();
-//                    Patron borrower = null;
+//        book3.addWaitList(person3);
 //
-//                    while (patronNode != null) {
-//                        if (patronNode.getPatron().getCardNumber().equals(patronCard)) {
-//                            borrower = patronNode.getPatron();
-//                            break;
-//                        }
-//                        patronNode = patronNode.getNextNode();
-//                    }
+//        Book book9 = books.getbook(book1);
+//        book9.setAvailable(false);
+//       // book1.display(true);
 //
-//                    if (borrower == null) {
-//                        System.out.println("Patron not found.");
-//                        break;
-//                    }
+//        Patron[] patrons = book1.getWaitList().getAll();
+//        BookBST bst = books.getBookBST();
+//        books.getbook(book1).addWaitList(person1);
+//        System.out.println(books.getbook(book1));
+//        System.out.println(bst.searchByTitle("The Catcher in the Rye"));
+//        System.out.println(book9);
+//        System.out.println(book9.getWaitList());
+//        System.out.println(books.getbook(book1).getWaitList());
 //
-//                    System.out.print("Enter Book Title to Borrow: ");
-//                    title = scanner.nextLine();
-//                    foundBook = bookBST.searchByTitle(title);
 //
-//                    if (foundBook != null && foundBook.IsAvailable()) {
-//                        borrower.borrowBook(foundBook);
-//                        foundBook.setAvailable(false);
-//                        System.out.println("Book borrowed successfully!");
-//                    } else if (!foundBook.IsAvailable()) {
-//                        System.out.println("you are added to the waitlist for this book.");
-//                        foundBook.addWaitList(borrower);
-//                    } else {
-//                        System.out.println("Book does not exist.");
-//                    }
-//                    break;
 //
-//                case 9:
-//                    System.out.println("Exiting...");
-//                    scanner.close();
-//                    return;
-//
-//                default:
-//                    System.out.println("Invalid choice! Please try again.");
-//            }
-//        }
-//    }
+//        FileManagement.saveBookLinkedList(books,"test.txt");
     }
 }

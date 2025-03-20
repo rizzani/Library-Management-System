@@ -9,6 +9,7 @@ public class LibraryManagementSystem {
    private String patron;
    private String book;
 
+
    public LibraryManagementSystem() {
        this.books = new BookLinkedList();
        this.patronList = new PatronLinkList();
@@ -16,8 +17,10 @@ public class LibraryManagementSystem {
        this.scanner = new Scanner(System.in);
        this.patron = "patronList.txt";
        this.book = "bookList.txt";
+       patronList.insertAtBack(new Patron("ADMIN", "ADMIN"));
+       patronList.getHead().getPatron().setPassword("ADMIN");
+       Add.books(bookBST, books);
        Add.patrons(patronList);
-       Add.books(bookBST,books);
 
    }
 
@@ -32,6 +35,11 @@ public class LibraryManagementSystem {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void pause() {
+        System.out.print("\nPress Enter to continue...");
+        scanner.nextLine();
     }
 
     public static void printHeader(String title) {
@@ -125,7 +133,7 @@ public class LibraryManagementSystem {
         System.out.print("🔐 Enter Password: ");
         String password = scanner.nextLine().trim();
 
-        if (patron != null && patron.getPassword().equals(password)) {
+        if (patron.getPassword().equals(password)) {
             System.out.println("✅ Login successful!");
             System.out.println("Welcome, " + patron.getName() + "\n");
 
@@ -135,11 +143,10 @@ public class LibraryManagementSystem {
             System.out.println("⚠ Incorrect Password!.");
         }
 
-       // System.out.println("\nPress Enter to continue...");
-       // scanner.nextLine();
     }
     //Methods For Login
     public void user(Patron patron) {
+        patron.setBooks(FileManagement.loadBookTitle(patron,bookBST));
         if (patron.isFirstLogin()){
             changePassword(patron);
             patron.setFirstLogin(false);
@@ -195,8 +202,7 @@ public class LibraryManagementSystem {
                 default:
                     System.out.println("⚠ Invalid choice! Please select 1-9.");
             }
-            System.out.println("\nPress Enter to continue...");
-            scanner.nextLine();
+            pause();
         }
     }
     public void softCheckOutBook(Patron patron) {
@@ -206,7 +212,7 @@ public class LibraryManagementSystem {
         if (book == null) {
             return;
         }
-        if (book.IsAvailable()) {
+        if (book.isAvailable()) {
             patron.getCheckout().push(book);
             System.out.println("\n✅ '" + book.getTitle() + "' added to pending checkout.");
         } else {
@@ -219,6 +225,7 @@ public class LibraryManagementSystem {
             switch (choice) {
                 case "1":
                     book.addWaitList(patron);
+                    System.out.println("You have been successfully added to the waitlist.");
                     break;
                 case "2":
                     softCheckOutBook(patron);
@@ -289,15 +296,23 @@ public class LibraryManagementSystem {
 
             System.out.println("✅ '" + book.getTitle() + "' checked out successfully!");
         }
+        FileManagement.saveBookTitle(patron);
     }
     public void returnBook(Patron patron) {
         clearScreen();
         printHeader("📦 Return a Book");
-        System.out.print("\nEnter Choose One to return: ");
+        printSubHeader("\nEnter Choose One to return: ");
         Book book = patron.getBooks().RemoveByNumber(scanner);
         if (book != null) {
-            book.setAvailable(true);
+            if (!book.getWaitList().isEmpty()) {
+                Patron newPatron = book.getWaitList().dequeue();
+                newPatron.getBooks().InsertAtBack(book);
+                FileManagement.saveBookTitle(newPatron);
+            }else {
+                book.setAvailable(true);
+            }
             System.out.println("\n✅ '" + book.getTitle() + "' returned successfully!");
+
         } else {
             System.out.println("\n⚠ You haven't borrowed this book.");
         }
@@ -305,22 +320,18 @@ public class LibraryManagementSystem {
     public void viewBorrowedBooks(Patron patron) {
         clearScreen();
         printHeader("📜 My Borrowed Books");
-        patron.getBooks().DisplayList(false);
+        patron.getBooks().displayList();
     }
 
     public void adminDisplay(){
        while (true) {
            clearScreen();
-           printHeader("📚 Library Management System");
+           printSubHeader("📚 Library Management System");
            System.out.println("1️⃣ Book Management");
            System.out.println("2️⃣ Patron Management");
-           System.out.println("3️⃣ Checkout Process");
-           System.out.println("4️⃣ Handling Waitlists");
-           System.out.println("5️⃣ Returning Books");
-           System.out.println("6️⃣ Search System");
-           System.out.println("7️⃣ User Interface Settings");
-           System.out.println("8️⃣ File System & Storage");
-           System.out.println("9️⃣ Exit");
+           System.out.println("3️⃣ Search System");
+           System.out.println("4️⃣ Display Statistics");
+           System.out.println("5️⃣ Exit");
 
            System.out.print("\nEnter your choice: ");
            String choice = scanner.nextLine();
@@ -328,20 +339,15 @@ public class LibraryManagementSystem {
            switch (choice) {
                case "1": bookManagement(); break;
                case "2": patronManagement(); break;
-               case "3": checkoutProcess(); break;
-               case "4": handleWaitlists(); break;
-               case "5": returningBooks(); break;
-               case "6": searchSystem(false); break;
-               case "7": userInterface(); break;
-               case "8": fileSystem(); break;
-               case "9":
+               case "3": searchSystem(false); break;
+               case "4": displayStatistics(); break;
+               case "5":
                    System.out.println("Exiting... Goodbye!");
                    return;
                default:
                    System.out.println("Invalid choice! Please select a valid option.");
            }
-           System.out.println("\nPress Enter to continue...");
-           scanner.nextLine();
+           pause();
        }
    }
 
@@ -361,15 +367,17 @@ public class LibraryManagementSystem {
             switch (choice) {
                 case "1":
                     addBook();
+                    save();
                     break;
                 case "2":
                     removeBook();
+                    save();
                     break;
                 case "3":
                     searchSystem(false);
                     break;
                 case "4":
-                    books.DisplayList(true);
+                    books.displayList();
                     break;
                 case "5":
                     System.out.println("Returning to Main Menu...");
@@ -392,6 +400,7 @@ public class LibraryManagementSystem {
         books.InsertAtBack(new Book(title,author,isbn));
         bookBST.insert(new Book(title,author,isbn));
         System.out.println("'" + title + "' by " + author + " added successfully!");
+        save();
     }
     public void removeBook() {
         System.out.println("\n🗑️ Removing a book...");
@@ -409,29 +418,40 @@ public class LibraryManagementSystem {
         while (true) {
             clearScreen();
             printHeader("👥 Patron Management");
-            System.out.println("1. Register a Patron");
-            System.out.println("2. View Patron Details");
-            System.out.println("3. Track Checked-out Books");
-            System.out.println("4. Back to Main Menu");
-            System.out.print("Enter your choice: ");
 
-            String choice = scanner.nextLine(); // Read user input
+            System.out.println("1. Register a Patron");
+            System.out.println("2. Reset Patron Password");
+            System.out.println("3. Remove Patron");
+            System.out.println("4. View Patron Details");
+            System.out.println("5. View All Patrons");
+            System.out.println("6. Back to Main Menu");
+            System.out.print("\nEnter your choice (1-6): ");
+
+            String choice = scanner.nextLine().trim();
 
             switch (choice) {
                 case "1":
                     registerPatron();
                     break;
                 case "2":
-                    viewPatronDetails();
+                    resetPatronPassword();
                     break;
                 case "3":
-                    viewAllPatron();
+                    removePatron();
                     break;
                 case "4":
-                    System.out.println("Returning to Main Menu...");
+                    viewPatronDetails();
+                    break;
+                case "5":
+                    viewAllPatron();
+                    break;
+                case "6":
+                    System.out.println("\nReturning to Main Menu...");
+                    pause();
                     return;
                 default:
-                    System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+                    System.out.println("\n❌ Invalid choice. Please enter a number between 1 and 6.");
+                    pause();
             }
         }
     }
@@ -446,6 +466,24 @@ public class LibraryManagementSystem {
         Patron patron = new Patron(fName, lName);
         patronList.insertAtBack(patron);
         System.out.println("✅ Patron '" + patron.getName() + "' registered successfully!");
+        save();
+    }
+    public void removePatron() {
+        System.out.print("Enter the Patron's Card Number to remove: ");
+        String patronCard = scanner.nextLine().trim();
+
+        if (patronCard.isEmpty()) {
+            System.out.println("Invalid input. Please enter a valid Card Number.");
+            return;
+        }
+
+        boolean removed = patronList.removePatron(patronCard);
+
+        if (removed) {
+            System.out.println("Removal successful.");
+        } else {
+            System.out.println("Could not remove patron. Please check the Card Number and try again.");
+        }
     }
     public void viewPatronDetails() {
         clearScreen();
@@ -467,36 +505,15 @@ public class LibraryManagementSystem {
         printHeader("All Patrons");
         patronList.display();
     }
-
-    public static void checkoutProcess() {
-        clearScreen();
-        printHeader("🛒 Checkout Process");
-        System.out.println("1. Select Books");
-        System.out.println("2. Finalize Checkout");
-        System.out.println("3. Cancel Checkout");
-        System.out.println("4. Back to Main Menu");
-        scanner.nextLine();
+    public void resetPatronPassword() {
+       clearScreen();
+       printHeader("Reset Password");
+        System.out.println("Enter Patron Card Number To Search:");
+        String cardNumber = scanner.nextLine().trim();
+        Patron foundPatron = patronList.findPatron(cardNumber);
+        foundPatron.setPassword(foundPatron.generatePassword());
+        printSubHeader("\n🔑 Temporary Password: " + foundPatron.getPassword());
     }
-
-    public static void handleWaitlists() {
-        clearScreen();
-        printHeader("⏳ Handling Waitlists");
-        System.out.println("1. Add to Waitlist");
-        System.out.println("2. View Waitlist");
-        System.out.println("3. Notify Next Patron");
-        System.out.println("4. Back to Main Menu");
-        scanner.nextLine();
-    }
-
-    public static void returningBooks() {
-        clearScreen();
-        printHeader("📦 Returning Books");
-        System.out.println("1. Return a Book");
-        System.out.println("2. Process Waitlist");
-        System.out.println("3. Back to Main Menu");
-        scanner.nextLine();
-    }
-
     public Book searchSystem(boolean returnBook) {
         while (true) {
             clearScreen();
@@ -641,36 +658,27 @@ public class LibraryManagementSystem {
     }
 
 
-
-
-    public static void userInterface() {
-        clearScreen();
-        printHeader("🎨 User Interface Settings");
-        System.out.println("1. Change Theme");
-        System.out.println("2. Adjust Text Size");
-        System.out.println("3. Back to Main Menu");
-        scanner.nextLine();
-    }
-
-    public static void fileSystem() {
-        clearScreen();
-        printHeader("💾 File System & Storage");
-        System.out.println("1. Load Data from File");
-        System.out.println("2. Save Data to File");
-        System.out.println("3. Manage Passwords");
-        System.out.println("4. Back to Main Menu");
-        scanner.nextLine();
-    }
-
     public void save(){
         FileManagement.savePatronLinkList(patronList,patron);
         FileManagement.saveBookLinkedList(books,book);
-
     }
 
     public void load(){
        this.patronList = FileManagement.loadPatronLinkList(patron);
-       this.books = FileManagement.loadBookLinkedList(book);
-       this.bookBST = books.getBookBST();
+       BookLinkedList tempBooks = FileManagement.loadBookLinkedList(book,patronList);
+       if(tempBooks!=null){
+           this.books = tempBooks;
+           this.bookBST = books.getBookBST();
+       }
+
     }
+
+    public void displayStatistics() {
+        System.out.println("Library Statistics:");
+        System.out.println("Total Books: " + books.CountNodes());
+        System.out.println("Total Patrons: " + patronList.countNodes());
+        System.out.println("Current Checkouts: " + books.getCheckOut());
+    }
+
+
 }

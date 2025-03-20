@@ -11,10 +11,6 @@ public class PatronLinkList {
         return head;
     }
 
-    public void setHead(PatronNode head) {
-        this.head = head;
-    }
-
     public boolean isEmpty() {
         return (head == null);
     }
@@ -42,7 +38,7 @@ public class PatronLinkList {
         {
             count ++;
             trav = trav.getNextNode();
-        };
+        }
         return count;
     }
 
@@ -77,5 +73,34 @@ public class PatronLinkList {
         System.out.println("Patron not found.");
         return null;
 
+    }
+
+    public boolean removePatron(String cardNumber) {
+        if (isEmpty()) {
+            System.out.println("No patrons in the list.");
+            return false;
+        }
+
+        if (head.getPatron().getCardNumber().equals(cardNumber)) {
+            head = head.getNextNode();
+            return true;
+        }
+
+        PatronNode current = head;
+        PatronNode previous = null;
+
+        while (current != null && !current.getPatron().getCardNumber().equals(cardNumber)) {
+            previous = current;
+            current = current.getNextNode();
+        }
+
+
+        if (current == null) {
+            System.out.println("Patron not found.");
+            return false;
+        }
+
+        previous.setNextNode(current.getNextNode());
+        return true;
     }
 }

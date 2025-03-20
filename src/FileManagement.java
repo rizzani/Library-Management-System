@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.*;
 
 public class FileManagement {
 
@@ -24,7 +23,8 @@ public class FileManagement {
                 currentNode = currentNode.getNextNode();
             }
 
-            System.out.println("Patrons saved successfully to " + fileName);
+
+           // System.out.println("Patrons saved successfully to " + fileName);
         } catch (IOException e) {
             System.out.println("Error saving patrons: " + e.getMessage());
         }
@@ -57,12 +57,13 @@ public class FileManagement {
                     patron.setAdmin(isAdmin);
                     patron.setFirstLogin(firstLogin);
 
+
                     // Insert the new Patron into the list
                     list.insertAtBack(patron);
                 }
             }
 
-            System.out.println("Patrons loaded successfully from " + fileName);
+           // System.out.println("Patrons loaded successfully from " + fileName);
         } catch (IOException e) {
             System.out.println("Error loading patrons: " + e.getMessage());
         }
@@ -79,19 +80,31 @@ public class FileManagement {
 
             // Write each book's data
             for (Book book : books) {
-                writer.write(book.getTitle() + ","
-                        + book.getAuthor() + ","
-                        + book.getISBN() + ","
-                        + book.IsAvailable() + "\n");
+                StringBuilder line = new StringBuilder();
+
+                line.append(book.getTitle()).append(",")
+                        .append(book.getAuthor()).append(",")
+                        .append(book.getISBN()).append(",")
+                        .append(book.isAvailable());
+
+                if (book.getWaitList() != null) {
+                    Patron[] patrons = book.getWaitList().getAll();
+                    for (Patron patron : patrons) {
+                        line.append(",").append(patron.getCardNumber());
+                    }
+                }
+
+                line.append("\n"); // Add a new line at the end
+                writer.write(line.toString());
             }
-            System.out.println("Books have been saved to " + fileName);
+           // System.out.println("Books have been saved to " + fileName);
         } catch (IOException e) {
             System.err.println("Error saving file: " + e.getMessage());
         }
     }
 
     // Load the linked list of books from a CSV file
-    public static BookLinkedList loadBookLinkedList(String fileName) {
+    public static BookLinkedList loadBookLinkedList(String fileName, PatronLinkList list) {
         BookLinkedList bookList = new BookLinkedList();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -100,7 +113,7 @@ public class FileManagement {
 
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length == 4) {
+                if (data.length >= 4) { // Ensure there are at least four fields
                     String title = data[0];
                     String author = data[1];
                     String isbn = data[2];
@@ -109,15 +122,53 @@ public class FileManagement {
                     Book book = new Book(title, author, isbn);
                     book.setAvailable(isAvailable);
 
+                    // Check if there are patrons in the waitlist
+                    if (data.length > 4) {
+                        Queue waitList = new Queue();
+                        for (int i = 4; i < data.length; i++) {
+                            Patron patron = list.findPatron(data[i]); // Assuming Patron constructor takes card number
+                            if (patron != null) {
+                                waitList.enqueue(patron);
+                            }
+                        }
+                        book.setWaitList(waitList);
+                    }
+
                     // Add the book to the list
                     bookList.InsertAtBack(book);
                 }
             }
-            System.out.println("Books have been loaded from " + fileName);
+            // System.out.println("Books have been loaded from " + fileName);
         } catch (IOException e) {
             System.err.println("Error loading file: " + e.getMessage());
         }
 
+        return bookList;
+    }
+
+    public static void saveBookTitle(Patron patron) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(patron.getCardNumber() + ".txt"))) {
+            Book[] books = patron.getBooks().getAllBooks();
+            if (books != null) {
+                for (Book book : books) {
+                    writer.write(book.getTitle() + "\n");
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving books: " + e.getMessage());
+        }
+    }
+    public static BookLinkedList loadBookTitle(Patron patron, BookBST bst) {
+        BookLinkedList bookList = new BookLinkedList();
+        String fileName = patron.getCardNumber() + ".txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                bookList.InsertAtBack(bst.searchByTitle(line));
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading books: " + e.getMessage());
+        }
         return bookList;
     }
 }

@@ -42,7 +42,7 @@ public class Book {
     public String getISBN() {  // Changed return type
         return isbn;
     }
-    public boolean IsAvailable() {
+    public boolean isAvailable() {
         return isAvailable;
     }
     public Queue getWaitList() {
@@ -64,6 +64,10 @@ public class Book {
 
     public void setAvailable(boolean available) {
         this.isAvailable = available;
+    }
+
+    public void setWaitList(Queue waitList) {
+        this.waitList = waitList;
     }
 
     public void display(boolean display) {

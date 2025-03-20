@@ -84,17 +84,17 @@ public class BookLinkedList {
         return (head == null);
     }
 
-    public void DisplayList(boolean display ) {
+    public void displayList() {
         if(IsEmpty())
         {
-            System.err.println("The list is empty!.");
+            System.out.println("The list is empty!.");
             return;
         }
 
         BookNode trav = head;
         while(trav !=null)
         {
-            trav.display(display);
+            trav.display(false);
             trav = trav.getNextNode();
         }
     }
@@ -170,7 +170,6 @@ public class BookLinkedList {
             if (index == choice) {
                 Book temp = current.getBook();
                 prev.setNextNode(current.getNextNode());
-                System.out.println("Book removed successfully.");
                 return temp;
             }
             prev = current;
@@ -189,5 +188,42 @@ public class BookLinkedList {
             trav = trav.getNextNode();
         }
         return bst;
+    }
+
+    public Book getbook(Book bookToGet) {
+        if (IsEmpty()) {
+            System.out.println("⚠️ List is empty. No book to remove..");
+            return null;
+        }
+
+
+        if (head.getBook().equals(bookToGet)) {
+            return head.getBook();
+        }
+
+        BookNode prev = head;
+        BookNode current = head.getNextNode();
+
+        while (current != null) {
+            if (current.getBook().equals(bookToGet)) {
+                return current.getBook();
+            }
+            prev = current;
+            current = current.getNextNode();
+        }
+
+        System.out.println("⚠️ Book not found in the list.");
+        return null;
+    }
+
+    public int getCheckOut(){
+        Book[] books = getAllBooks();
+        int count = 0;
+        for (Book book : books) {
+            if (!book.isAvailable()){
+                count++;
+            }
+        }
+        return count;
     }
 }
